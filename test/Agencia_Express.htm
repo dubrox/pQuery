@@ -1,0 +1,239 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Agencia Express</title>
+		
+		<link rel="icon" type="image/gif" href="http://avisooportunoexpress.mx/img/favicon.gif">
+		
+		<link type="text/css" rel="stylesheet" href="http://avisooportunoexpress.mx/css/colorbox.css">
+		<link type="text/css" rel="stylesheet" href="http://avisooportunoexpress.mx/css/aostyle/jquery-ui-1.8.4.custom.css">
+		<link type="text/css" rel="stylesheet" href="http://avisooportunoexpress.mx/css/principal.css">
+		<link type="text/css" rel="stylesheet" href="http://avisooportunoexpress.mx/css/misanuncios.css">
+		
+		<script type="text/javascript" src="http://avisooportunoexpress.mx/js/jquery-1.4.2.min.js"></script>
+		<script type="text/javascript" src="http://avisooportunoexpress.mx/js/jquery-ui-1.8.4.custom.min.js"></script>
+		<script type="text/javascript" src="http://avisooportunoexpress.mx/js/jquery.ui.datepicker-es.js"></script>
+		<script type="text/javascript" src="http://avisooportunoexpress.mx/js/jquery.ui.multidatespicker.js"></script>
+		<script type="text/javascript" src="http://avisooportunoexpress.mx/js/jquery.scrollTo-1.4.2-min.js"></script>
+		<script type="text/javascript" src="http://avisooportunoexpress.mx/js/jquery.colorbox-min.js"></script>
+		<script type="text/javascript" src="http://avisooportunoexpress.mx/js/principal.js"></script>
+		<script type="text/javascript" src="http://avisooportunoexpress.mx/js/misanuncios.js"></script>
+		
+	<link type="text/css" rel="stylesheet" href="http://avisooportunoexpress.mx/css/home.css">
+	<script type="text/javascript" src="http://avisooportunoexpress.mx/js/home.js"></script></head>
+	<body>
+		<div id="main">
+			<div id="header"><div id="mini_enlaces" class="aostyle">
+	<ul>
+		<!-- li><a href="Subscr&iacute;bete">Subscr&iacute;bete</a></li>
+		<li class="last"><a href="Haz tu p&aacute;gina principal">&iexcl;Haz tu p&aacute;gina principal!</a></li -->
+	</ul>
+</div>
+<div id="logo_y_acceso" name="logo_y_acceso">
+	<a id="logo_grande" href="http://avisooportunoexpress.mx/index.php">
+		<img src="http://avisooportunoexpress.mx/img/logo_header_avisooportunoexpress.png" alt="Aviso Oportuno Express">
+	</a>
+	<form id="user_session" name="user_session" method="post">
+		<div id="access_container">
+			
+			<div id="access_tab" name="access_tab">Login / Crear cuenta</div>
+			<input type="hidden" name="auth" value="login">
+			<div id="login_box_wrapper">
+				<div id="login_box" class="aostyle">
+					<label for="user">Cuenta: </label><input name="user" id="user" type="text">
+					<label for="pass">Contrase&ntilde;a: </label><input name="pass" id="pass" type="password">
+					<div class="button">
+						<button type="submit">Ingresar</button>
+						<a href="http://avisooportunoexpress.mx/recupera_acceso.php" id="recupera-acceso" title="Click aqui para recuperar tu contrase&ntilde;a">&iquest;Olvidaste tu contrase&ntilde;a?</a>
+					</div>
+					<div id="crear-cuenta-link">
+						<a href="http://avisooportunoexpress.mx/crear_cuenta.php" title="Click aqui para crear una nueva cuenta">Crear cuenta</a>
+					</div>
+					<p class="tips"></p>
+				</div>
+			</div>
+		</div>
+	</form>
+	<div class="clear"></div>
+</div>
+
+</div>
+			<div id="content"><div class="box">
+	<div class="top_border"></div>
+	<div class="content">
+		<div id="titulo_home_wrapper">
+			<div id="titulo_home">
+				<p class="primero">Ordene y revise sus anuncios desde la comodidad de su propia computadora.</p>
+				<p class="segundo">&iexcl;Es f&aacute;cil, r&aacute;pido y seguro! <em>Anunciate aqu&iacute;...</em></p>
+			</div>
+		</div>
+		<ul id="lista_secciones">
+			<li class="seccion inmuebles">
+				<div class="barra_superior">
+					<h2 class="boton_especial">Inmuebles</h2>
+					<div class="fondo_boton_especial"></div>
+				</div>
+				<div class="fondo_seccion">
+					<div class="teaser">
+						<ul class="tipos_clasificados">
+							<li class="tipo_clasificado"><span class="etiqueta">Venta casas</span></li>
+							<li class="tipo_clasificado"><span class="etiqueta">Renta deptos</span></li>
+							<li class="tipo_clasificado"><span class="etiqueta">Traspasos</span></li>
+						</ul>
+					</div>
+				</div>
+				<div class="barra_inferior">
+					<button id="inmuebles" class="boton_especial" value="inmuebles">Contrata anuncio</button>
+					<div class="fondo_boton_especial"></div>
+				</div>
+			</li>
+			<li class="seccion empleos">
+				<div class="barra_superior">
+					<h2 class="boton_especial">Empleos</h2>
+					<div class="fondo_boton_especial"></div>
+				</div>
+				<div class="fondo_seccion">
+					<div class="teaser">
+						<ul class="tipos_clasificados">
+							<li class="tipo_clasificado"><span class="etiqueta">Ingenieros</span></li>
+							<li class="tipo_clasificado"><span class="etiqueta">Abogados</span></li>
+							<li class="tipo_clasificado"><span class="etiqueta">Capturistas</span></li>
+						</ul>
+					</div>
+				</div>
+				<div class="barra_inferior">
+					<button id="empleos" class="boton_especial" value="empleos">
+						Contrata anuncio
+					</button>
+					<div class="fondo_boton_especial"></div>
+				</div>
+			</li>
+			<li class="seccion vehiculos">
+				<div class="barra_superior">
+					<h2 class="boton_especial">Vehiculos</h2>
+					<div class="fondo_boton_especial"></div>
+				</div>
+				<div class="fondo_seccion">
+					<div class="teaser">
+						<ul class="tipos_clasificados">
+							<li class="tipo_clasificado"><span class="etiqueta">BMW</span></li>
+							<li class="tipo_clasificado"><span class="etiqueta">Chevrolet</span></li>
+							<li class="tipo_clasificado"><span class="etiqueta">Fiat</span></li>
+						</ul>
+					</div>
+				</div>
+				<div class="barra_inferior">
+					<button id="vehiculos" class="boton_especial" value="vehiculos">Contrata anuncio</button>
+					<div class="fondo_boton_especial"></div>
+				</div>
+			</li>
+			<li class="seccion varios last">
+				<div class="barra_superior">
+					<h2 class="boton_especial">Varios</h2>
+					<div class="fondo_boton_especial"></div>
+				</div>
+				<div class="fondo_seccion">
+					<div class="teaser">
+						<ul class="tipos_clasificados">
+							<li class="tipo_clasificado"><span class="etiqueta">Mascotas</span></li>
+							<li class="tipo_clasificado"><span class="etiqueta">Computación</span></li>
+							<li class="tipo_clasificado"><span class="etiqueta">Celulares</span></li>
+						</ul>
+					</div>
+				</div>
+				<div class="barra_inferior">
+					<button id="varios" class="boton_especial" value="varios">Contrata anuncio</button>
+					<div class="fondo_boton_especial"></div>
+				</div>
+			</li>
+		</ul>
+		<div class="bottom_shadow clear"></div>
+		<div id="terminos_y_condiciones">
+			<a class="lightboxed" href="http://avisooportunoexpress.mx/politicas_de_cancelacion.html">Políticas de cancelación</a>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<div class="bottom_border"></div>
+	<script type="text/javascript">
+		tagCertifica(21437, "/portada");
+	</script>
+</div></div>
+			<div id="footer">
+				<div class="columna izquierda">
+					<div id="footer_enlaces_internos">
+						<ul>
+							<li class="first">
+								<a href="http://www.eluniversal.com.mx/disenio/directorios08/directorio.html">Directorio</a>
+							</li>
+							<li>
+								<a href="http://avisooportuno.mx/anunciate/anunciate_contrata.php">Cont&aacute;ctanos</a>
+							</li>
+							<li>
+								<a href="http://www.eluniversal.com.mx/disenio/servicios/EU_supublicidad.htm">Publicidad</a>
+							</li>
+							<li>
+								<a href="http://www.eluniversal.com.mx/disenio/directorios08/politicas1.html">Aviso Legal</a>
+							</li>
+						</ul>
+					</div>
+					<div id="footer_enlaces_externos">
+						<ul>
+							<li class="first">
+								<a href="http://www.eluniversal.com.mx">El Universal</a>
+							</li>
+							<li>
+								<a href="http://avisooportuno.mx/home/">Aviso Oportuno</a>
+							</li>
+							<li>
+								<a href="http://avisooportuno.mx/inmuebles/">Inmuebles</a>
+							</li>
+							<li>
+								<a href="http://avisooportuno.mx/empleos/">Empleos</a>
+							</li>
+							<li>
+								<a href="http://avisooportuno.mx/vehiculos/">Veh&iacute;culos</a>
+							</li>
+							<li>
+								<a href="http://avisooportuno.mx/varios/">Varios</a>
+							</li>
+							<li>
+								<a href="http://avisooportunoexpress.mx">Agencia Internet</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="columna derecha">
+					<div id="footer_copyright">
+						&copy;
+						<span class="copyright_fecha_inicio">
+							2000
+						</span>
+						-
+						<span class="copyright_fecha_fin">
+							<script type="text/javascript">
+							<!--
+								var d = new Date();
+								document.write(d.getFullYear());
+							// -->
+							</script>
+							<noscript>
+								2010
+							</noscript>
+						</span>
+						<span class="logo_eluniversal">
+							<a href="http://www.eluniversal.com.mx">
+								<img src="http://avisooportuno.mx/img/eluniversal_footer.gif" alt="ElUniversal.com.mx" />
+							</a>
+						</span>
+					</div>
+					<div id="footer_texto_copyright">
+						Todos los derechos reservados. EL UNIVERSAL, Compa&ntilde;&iacute;a Period&iacute;stica Nacional. De no existir pr&eacute;via autorizaci&oacute;n, queda expresamente prohibida la publicaci&oacute;n, retransmisi&oacute;n, edici&oacute;n y cualquier otro uso de los contenidos.
+					</div>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+		<div id="debug"></div>
+	</body>
+</html>
