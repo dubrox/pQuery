@@ -84,8 +84,7 @@ class pQueryNode {
 			$nodes = $this->selected;
 			
 		if(isset($html)) {
-			$new_node = $this->dom->createDocumentFragment();
-			$new_node->appendXML($html);
+			$new_node = $this->getNode($html);
 			
 			foreach($nodes as $node)
 				for($i = $node->childNodes->length - 1; $i > -1; $i--)
@@ -110,8 +109,7 @@ class pQueryNode {
 			$nodes = $this->selected;
 			
 		if(isset($html)) {
-			$new_node = $this->dom->createDocumentFragment();
-			$new_node->appendXML($html);
+			$new_node = $this->getNode($html);
 			
 			foreach($nodes as $node)
 				$node->parentNode->replaceChild($new_node, $node);
@@ -150,12 +148,28 @@ class pQueryNode {
 		return clone $this;
 	}
 	
+	function append($content) {
+		$toAppend = $this->getNode($content);
+		$appendTo = $this;
+		foreach($appendTo->getSelected() as $parentNode)
+			$parentNode->appendChild($toAppend);
+		return $this;
+	}
+	
 	function appendTo($selector) {
 		$toAppend = $this->selected;
 		$appendTo = $this->find($selector);
 		foreach($appendTo->getSelected() as $parentNode)
 			foreach($toAppend as $node)
 				$parentNode->appendChild($node);
+		return $this;
+	}
+	
+	function prepend($content) {
+		$toPrepend = $this->getNode($content);
+		$prependTo = $this;
+		foreach($prependTo->getSelected() as $parentNode)
+			$parentNode->insertBefore($toPrepend, $parentNode->childNodes->item(0));
 		return $this;
 	}
 	
@@ -186,7 +200,32 @@ class pQueryNode {
 		return $this->selected;
 	}
 	
+	function getFirst() {
+		return $this->selected[0];
+	}
+	
 	# INTERNAL FUNCTIONS #
+	
+	private function getNode($something) {
+		if(is_string($something))
+			if($this->is_html($something))
+				return $this->getNodeFromHtmlString($something);
+			else
+				return $this->find($something)->getFirst();
+		else if(is_a($something, 'DOMNode'))
+			return $something;
+		else throw new Exception('Invalid type of data received!');
+	}
+	
+	private function is_html($string) {
+		return preg_match('/[^<]*(<[\w\W]+>)[^>]*$/',$string);
+	}
+	
+	private function getNodeFromHtmlString($html) {
+		$new_node = $this->dom->createDocumentFragment();
+		$new_node->appendXML($html);
+		return $new_node;
+	}
 	
 	private function set_or_get($set, $get, $name, $value, $firstOnly) {
 		if(!isset($firstOnly))
