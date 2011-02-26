@@ -1,77 +1,81 @@
 <?php
-// Helpers
-define('PQUERY_HELPER_OBJECT', 'pQueryHelperObject');
-define('PQUERY_NODE_HELPER_OBJECT', 'pQueryNodeHelperObject');
-function pQuery($to_load) {
-	global ${PQUERY_HELPER_OBJECT};
-	global ${PQUERY_NODE_HELPER_OBJECT};
-	${PQUERY_HELPER_OBJECT} = new pQuery($to_load);
-	${PQUERY_NODE_HELPER_OBJECT} = ${PQUERY_HELPER_OBJECT}->getNode();
-	return ${PQUERY_HELPER_OBJECT};
-}
-function p($query = false) {
-	global ${PQUERY_NODE_HELPER_OBJECT};
-	return ${PQUERY_NODE_HELPER_OBJECT}->find($query);
-}
+namespace pQuery;
 
 /**
- * 
- * @author dubrox
+ * pQuery is a tool to manipulate (x)html documents
+ * with the simplicity of CSS selectors and jQuery-like
+ * manipulation methods.
  *
+ * @version 0.3b
+ * @author dubrox
  */
-class pQuery {
-	private $dom, $xpath;
+function Helper($source) {
+	$dom = new Document($source);
+	return $dom->getFinder();
+}
 
-	function __construct($str = null) {
-		if ($str) {
-			
-			$this->dom = new DOMDocument();
+class Document {
+	public $dom, $xpath, $node;
+
+	function __construct($str) {
+		if($str) {
+			$this->dom = new \DOMDocument();
 			
 			if (preg_match("/^http:\/\//i",$str) || is_file($str))
 				@$this->dom->loadHTMLFile($str);
 			else
 				@$this->dom->loadHTML($str);
 				
-			$this->xpath = new DOMXpath($this->dom);
-			
+			$this->xpath = new \DOMXpath($this->dom);
+			$this->node = new Node($this->dom, $this->xpath);
 		} else throw new Exception('Nothing to load!');
 	}
 	
-	function getNode() {
-		return new pQueryNode($this->dom, $this->xpath);
+	public function __toString() {
+		return $this->node->outerHtml();
+	}
+	
+	function getFinder() {
+		$self = $this;
+		return function ($query = false, $nth = null) use (&$self) {
+			return $self->node->find($query, $nth);
+		};
 	}
 }
 
-class pQueryNode {
-	private $dom, $xpath, $selected;
+class Node {
+	private $dom, $xpath, $selected, $selector, $nth;
 	
-	function __construct(&$dom, &$xpath, $selected = null) {
+	function __construct(&$dom, &$xpath, $selected = null, $selector = null, $nth = null) {
 		$this->dom = $dom;
 		$this->xpath = $xpath;
-		if(isset($selected))
-			$this->selected = $selected;
-		else
-			$this->selected = $dom;
+		$this->selected = isset($selected) ? $selected : $dom;
+		$this->selector = $selector;
+		$this->nth = $nth;
 	}
 
-	function find($selector = false, $engine = 'css') {
+	function find($selector = '', $nth = null, $engine = 'css') {
 		if($selector) {
 			switch($engine) {
-				case 'css':		$selector = pQueryNode::css_to_xpath($selector); break;
+				case 'css':		$selector = Node::css_to_xpath($selector); break;
 				case 'xpath':	$selector = $selector; break;
 				default: throw new Exception($engine . ' is not a supported selector engine!');
 			}
-			
-			$selected = array();
-			foreach($this->xpath->query($selector) as $node)
-				$selected[]= $node;
-		} else {
-			$selected = array();
-			foreach($this->xpath->query('/') as $node)
-				$selected[]= $node;
 		}
 		
-		return new pQueryNode($this->dom, $this->xpath, $selected);
+		if(!$this->selector) {
+			if(!$selector) $selector = '/';
+		} else {
+			$selector = $this->selector . $selector;
+		}
+		
+		$selected = array();
+		foreach($this->xpath->query($selector) as $node)
+			$selected[]= $node;
+		
+		if(isset($nth)) $selected = array($selected[$nth]);
+		
+		return new Node($this->dom, $this->xpath, $selected, $selector, $nth);
 	}
 	
 	function html($html = null, $firstOnly = null) {
@@ -121,6 +125,10 @@ class pQueryNode {
 				$html[]= $this->getHtml($node, true);
 			return implode("\n", $html);
 		}
+	}
+	
+	public function __toString() {
+		return $this->outerHtml();
 	}
 	
 	function attr($name, $value = null, $firstOnly = null) {
@@ -201,7 +209,20 @@ class pQueryNode {
 	}
 	
 	function getFirst() {
-		return $this->selected[0];
+		return isset($this->selected[0])
+			? $this->selected[0]
+			: false;
+	}
+	
+	function getSize() {
+		return count($this->selected);
+	}
+	
+	function getName() {
+		if(isset($this->selected[0]))
+			return $this->selected[0]->nodeName;
+		else
+			return false;
 	}
 	
 	# INTERNAL FUNCTIONS #
@@ -282,7 +303,7 @@ class pQueryNode {
 		$selector_array = explode(',', $css_selector);
 		$elements_pattern = "/(?P<tag>[\w-:\*]+)*(\#(?P<id>[\w-]+))*(?P<classes>\.[\w-.]+)*(?P<attrs>\[.+\])* /is";
 		$classes_pattern = "/\.(?<class>[\w-]+)/is";
-		$attrs_pattern = "/\[(?<attr>[\w]+)((?P<op>[!*^$]?=)[\"']?(?P<val>[^\]]*?)[\"'])*\]/is";
+		$attrs_pattern = "/\[(?<attr>[\w]+)((?P<op>[!*^$]?=)[\"']?(?P<val>[^\"']*?)[\"'])*\]/is";
 		
 		$selectors = array();
 		foreach($selector_array as $selector_string) {
@@ -297,7 +318,7 @@ class pQueryNode {
 				if(isset($element_match['classes'])) {
 					preg_match_all($classes_pattern, $element_match['classes'], $class_matches, PREG_SET_ORDER);
 					foreach($class_matches as $class_match)
-						if($class_match['class']) $attrs[] = pQueryNode::xcontains($class_match['class'], 'class');
+						if($class_match['class']) $attrs[] = Node::xcontains($class_match['class'], 'class');
 				}
 				
 				
@@ -307,9 +328,17 @@ class pQueryNode {
 						if(isset($attr_match['attr'])) {
 							$attr = '@'.$attr_match['attr'];
 							if($attr && !empty($attr_match['op']) && !empty($attr_match['val']))
-								 $attr.= $attr_match['op'].'"'.$attr_match['val'].'"';
+								switch($attr_match['op']) {
+									case '^=': 
+										$attr = 'starts-with('.$attr.', "'.$attr_match['val'].'")';
+										break;
+									default:
+										$attr.= $attr_match['op'].'"'.$attr_match['val'].'"';
+										break;
+								}
 							$attrs[] = $attr;
 						}
+					//user_error($element_match['attrs']);
 				}
 				
 				$attrs = ($attrs)
